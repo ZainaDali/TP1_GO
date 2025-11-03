@@ -146,3 +146,17 @@ func UpdateContact() {
 	fmt.Printf("   Nom  : %s\n", contact.Name)
 	fmt.Printf("   Email: %s\n", contact.Email)
 }
+
+func AddContactCLI(name, email string) {
+	newContact := Contact{
+		ID:    nextID,
+		Name:  name,
+		Email: email,
+	}
+
+	contacts[nextID] = newContact
+	nextID++
+
+	fmt.Println(" Contact ajouté via CLI!")
+	DisplayContact(newContact)
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"strings"
@@ -11,6 +12,14 @@ import (
 )
 
 func main() {
+
+	name := flag.String("name", "", "Nom du contact à ajouter")
+	email := flag.String("email", "", "Email du contact à ajouter")
+	flag.Parse()
+	if *name != "" && *email != "" {
+		contact.AddContactCLI(*name, *email)
+		return
+	}
 	reader := bufio.NewReader(os.Stdin)
 	var choice string
 
