@@ -27,7 +27,7 @@ func main() {
 		case "2":
 			contact.ListContacts()
 		case "3":
-			fmt.Println("Supprimer un contact")
+			contact.RemoveContact()
 		case "4":
 			fmt.Println("Mettre à jour un contact")
 		case "5":

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -77,4 +78,27 @@ func ListContacts() {
 	}
 
 	fmt.Printf("\n Total : %d contact(s)\n", len(contacts))
+}
+
+func RemoveContact() {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("ID du contact à supprimer : ")
+
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+
+	id64, err := strconv.ParseUint(input, 10, 64)
+	if err != nil {
+		fmt.Println("Erreur : ID invalide.")
+		return
+	}
+	id := uint(id64)
+
+	if _, exists := contacts[id]; !exists {
+		fmt.Printf("Erreur : aucun contact trouvé avec l'ID %d.\n", id)
+		return
+	}
+
+	delete(contacts, id)
+	fmt.Printf("Le contact avec l'ID %d a été supprimé avec succès.\n", id)
 }
