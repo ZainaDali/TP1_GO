@@ -22,13 +22,14 @@ Fonctionnalités :
 
 ## Structure du projet
 
+```
 TP1_GO/
-│
 ├── main.go # Point d’entrée du programme
 ├── contact/
 │ └── contact.go # Gestion des contacts (ajout, suppression, affichage)
-├── menu/
-│ └── menu.go # Affichage du menu principal
+└── menu/
+└── menu.go # Affichage du menu principal
+```
 
 ## Installation
 
