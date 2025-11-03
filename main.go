@@ -26,19 +26,15 @@ func main() {
 
 		case "2":
 			contact.ListContacts()
-			
 		case "3":
-			menu.HandleSubMenu(reader, "Supprimer un contact")
-			
+			fmt.Println("Supprimer un contact")
 		case "4":
-			menu.HandleSubMenu(reader, "Mettre à jour un contact")
-			
+			fmt.Println("Mettre à jour un contact")
 		case "5":
-			fmt.Println("👋 Au revoir!")
+			fmt.Println("Au revoir!")
 			return
-			
 		default:
-			fmt.Println("❌ Option invalide. Veuillez choisir entre 1 et 5.")
+			fmt.Println("Option invalide. Veuillez choisir entre 1 et 5.")
 		}
 	}
 }
