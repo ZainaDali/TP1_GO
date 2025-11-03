@@ -48,30 +48,29 @@ func AddContact() {
 	contacts[nextID] = newContact
 	nextID++
 
-	fmt.Println("Contact ajouté avec succès!")
+	fmt.Println("✅ Contact ajouté avec succès!")
+	// Afficher le contact qui vient d'être créé
+	DisplayContact(newContact)
 }
 
-func AddContactDirect(name, email string) {
-	newContact := Contact{
-		ID:    nextID,
-		Name:  name,
-		Email: email,
-	}
-
-	contacts[nextID] = newContact
-	nextID++
+// DisplayContact affiche un seul contact de manière formatée
+func DisplayContact(c Contact) {
+	fmt.Println("\n┌────────────────────────────────────────┐")
+	fmt.Printf("│ 🆔 ID    : %-27d │\n", c.ID)
+	fmt.Printf("│ 👤 Nom   : %-27s │\n", c.Name)
+	fmt.Printf("│ 📧 Email : %-27s │\n", c.Email)
+	fmt.Println("└────────────────────────────────────────┘")
 }
 
 func ListContacts() {
 	fmt.Println("\n📋 Liste des contacts :")
 	fmt.Println("========================")
 
-	for id, contact := range contacts {
-		fmt.Printf("ID: %d | Nom: %-20s | Email: %s\n",
-			id, contact.Name, contact.Email)
+	for _, contact := range contacts {
+		DisplayContact(contact)
 	}
 
-	fmt.Printf("\n Total : %d contact(s)\n", len(contacts))
+	fmt.Printf("\n📊 Total : %d contact(s)\n", len(contacts))
 }
 
 func RemoveContact() {
