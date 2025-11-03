@@ -21,9 +21,7 @@ func main() {
 
 		switch choice {
 		case "1":
-			// AddContact gère maintenant tout l'input lui-même
 			contact.AddContact()
-
 		case "2":
 			contact.ListContacts()
 		case "3":

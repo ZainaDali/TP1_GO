@@ -15,8 +15,14 @@ type Contact struct {
 }
 
 var (
-	contacts      = make(map[uint]Contact)
-	nextID   uint = 1
+	contacts = map[uint]Contact{
+		1: {
+			ID:    1,
+			Name:  "alexe",
+			Email: "alexe@exemple.fr",
+		},
+	}
+	nextID uint = 2
 )
 
 func AddContact() {
@@ -57,18 +63,6 @@ func AddContactDirect(name, email string) {
 }
 
 func ListContacts() {
-	if len(contacts) == 0 {
-
-		newContact := Contact{
-			ID:    nextID,
-			Name:  "alexe",
-			Email: "alexe@exemple.fr",
-		}
-
-		contacts[nextID] = newContact
-		nextID++
-	}
-
 	fmt.Println("\n📋 Liste des contacts :")
 	fmt.Println("========================")
 
