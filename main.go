@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/ZainaDali/TP1_GO.git/contact"
 	"github.com/ZainaDali/TP1_GO.git/menu"
 )
 
@@ -20,18 +21,24 @@ func main() {
 
 		switch choice {
 		case "1":
-			menu.HandleSubMenu(reader, "Ajouter un contact")
+			// AddContact gère maintenant tout l'input lui-même
+			contact.AddContact()
+
 		case "2":
-			menu.HandleSubMenu(reader, "Voir les contacts")
+			contact.ListContacts()
+			
 		case "3":
 			menu.HandleSubMenu(reader, "Supprimer un contact")
+			
 		case "4":
 			menu.HandleSubMenu(reader, "Mettre à jour un contact")
+			
 		case "5":
-			fmt.Println("Au revoir!")
+			fmt.Println("👋 Au revoir!")
 			return
+			
 		default:
-			fmt.Println("Option invalide. Veuillez choisir entre 1 et 5.")
+			fmt.Println("❌ Option invalide. Veuillez choisir entre 1 et 5.")
 		}
 	}
 }
