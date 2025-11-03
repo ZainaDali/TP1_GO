@@ -1,5 +1,7 @@
 package contact
 
+import "fmt"
+
 type Contact struct {
 	ID    uint
 	Name  string
@@ -21,4 +23,8 @@ func AddContact(name, email string) {
 	contacts[nextID] = newContact
 
 	nextID++
+}
+
+func RemoveContact(id uint) string {
+	return fmt.Sprintf("Le contact avec l'ID : %d est supprimé.", id)
 }
