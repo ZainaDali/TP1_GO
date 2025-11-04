@@ -99,7 +99,7 @@ func ListContacts() {
 	fmt.Printf("\n Total : %d contact(s)\n", len(contacts))
 }
 
-func (c *Contact) Remove() {
+func (c *Contact) remove() {
 	delete(contacts, c.ID)
 	c = nil
 }
@@ -124,11 +124,11 @@ func RemoveContact() {
 		return
 	}
 
-	contact.Remove()
+	contact.remove()
 	fmt.Printf("Le contact avec l'ID %d a été supprimé avec succès.\n", id)
 }
 
-func (c *Contact) Update(newName, newEmail string) {
+func (c *Contact) update(newName, newEmail string) {
 	if newName != "" {
 		c.Name = newName
 	}
@@ -174,7 +174,7 @@ func UpdateContact() {
 	newEmail, _ := reader.ReadString('\n')
 	newEmail = strings.TrimSpace(newEmail)
 
-	contact.Update(newName, newEmail)
+	contact.update(newName, newEmail)
 
 	fmt.Println("\n Contact mis à jour avec succès!")
 	fmt.Println("\n Nouvelles informations :")

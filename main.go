@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-
 	name := flag.String("name", "", "Nom du contact à ajouter")
 	email := flag.String("email", "", "Email du contact à ajouter")
 	flag.Parse()
