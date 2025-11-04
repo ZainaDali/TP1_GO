@@ -2,6 +2,7 @@ package contact
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -15,7 +16,7 @@ type Contact struct {
 }
 
 var (
-	contacts = map[uint]Contact{
+	contacts = map[uint]*Contact{
 		1: {
 			ID:    1,
 			Name:  "alexe",
@@ -25,6 +26,30 @@ var (
 	nextID uint = 2
 )
 
+func newContact(name, email string) (*Contact, error) {
+	name = strings.TrimSpace(name)
+	email = strings.TrimSpace(email)
+
+	if name == "" {
+		return nil, errors.New("Le nom doit être renseigné.")
+	}
+	if email == "" {
+		return nil, errors.New("Le mail doit être renseigné.")
+	}
+
+	c := &Contact{
+		ID:    nextID,
+		Name:  name,
+		Email: email,
+	}
+	return c, nil
+}
+
+func (c *Contact) add() {
+	contacts[c.ID] = c
+	nextID++
+}
+
 func AddContact() {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -33,26 +58,24 @@ func AddContact() {
 
 	fmt.Print("Nom : ")
 	name, _ := reader.ReadString('\n')
-	name = strings.TrimSpace(name)
 
 	fmt.Print("Email : ")
 	email, _ := reader.ReadString('\n')
-	email = strings.TrimSpace(email)
 
-	newContact := Contact{
-		ID:    nextID,
-		Name:  name,
-		Email: email,
+	c, err := newContact(name, email)
+
+	if err != nil {
+		fmt.Println("Erreur lors de la création :", err)
+		return
 	}
 
-	contacts[nextID] = newContact
-	nextID++
+	c.add()
+	c.DisplayContact()
 
 	fmt.Println("Contact ajouté avec succès!")
-	DisplayContact(newContact)
 }
 
-func DisplayContact(c Contact) {
+func (c Contact) DisplayContact() {
 	fmt.Println("\n┌────────────────────────────────────────┐")
 	fmt.Printf("│   ID    : %-28d │\n", c.ID)
 	fmt.Printf("│   Nom   : %-28s │\n", c.Name)
@@ -65,7 +88,7 @@ func ListContacts() {
 	fmt.Println("========================")
 
 	for _, contact := range contacts {
-		DisplayContact(contact)
+		contact.DisplayContact()
 	}
 
 	fmt.Printf("\n Total : %d contact(s)\n", len(contacts))
@@ -148,15 +171,15 @@ func UpdateContact() {
 }
 
 func AddContactCLI(name, email string) {
-	newContact := Contact{
-		ID:    nextID,
-		Name:  name,
-		Email: email,
+	c, err := newContact(name, email)
+
+	if err != nil {
+		fmt.Println("Erreur lors de la création :", err)
+		return
 	}
 
-	contacts[nextID] = newContact
-	nextID++
+	c.add()
+	c.DisplayContact()
 
 	fmt.Println(" Contact ajouté via CLI!")
-	DisplayContact(newContact)
 }
