@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+var ErrContactNotFound = fmt.Errorf("L'utilisateur est introuvable.")
+
 type MemoryStore struct {
 	contacts map[uint]*Contact
 	nextID   uint
@@ -25,15 +27,10 @@ func (m *MemoryStore) GetAll() ([]*Contact, error) {
 }
 
 func (m *MemoryStore) GetUserById(id uint) (*Contact, error) {
-	// ajoute une verif si l'id est au bon format
-
-	for _, contact := range m.contacts {
-		if contact.ID == id {
-			return contact, nil
-		}
+	if c, ok := m.contacts[id]; ok {
+		return c, nil
 	}
-
-	return nil, fmt.Errorf("contact not found")
+	return nil, ErrContactNotFound
 }
 
 func (m *MemoryStore) Add(contact *Contact) error {
@@ -46,7 +43,7 @@ func (m *MemoryStore) Add(contact *Contact) error {
 func (m *MemoryStore) Update(id uint, newName, newMail string) error {
 	contact, exists := m.contacts[id]
 	if !exists {
-		return fmt.Errorf("contact not found")
+		return ErrContactNotFound
 	}
 
 	if newName != "" {
@@ -61,7 +58,7 @@ func (m *MemoryStore) Update(id uint, newName, newMail string) error {
 
 func (m *MemoryStore) Delete(id uint) error {
 	if _, exists := m.contacts[id]; !exists {
-		return fmt.Errorf("contact not found")
+		return ErrContactNotFound
 	}
 
 	delete(m.contacts, id)
