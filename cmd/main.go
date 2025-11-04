@@ -43,4 +43,8 @@ func main() {
 			fmt.Println("Option invalide. Veuillez choisir entre 1 et 5.")
 		}
 	}
+
+	/**
+	* appeler app avec le store en params
+	 */
 }
