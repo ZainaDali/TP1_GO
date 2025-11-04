@@ -5,6 +5,12 @@ type MemoryStore struct {
 	nextID   uint
 }
 
+func NewMemoryStore() *MemoryStore {
+	return &MemoryStore{
+		contacts: []*Contact{},
+		nextID:   1,
+	}
+}
 func (m *MemoryStore) GetAll() ([]*Contact, error) {
 	return m.contacts, nil
 }
