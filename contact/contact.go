@@ -111,21 +111,14 @@ func RemoveContact() {
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 
-	id64, err := strconv.ParseUint(input, 10, 64)
+	contact, err := searchUser(input)
 	if err != nil {
-		fmt.Println("Erreur : ID invalide.")
-		return
-	}
-	id := uint(id64)
-
-	contact, exists := contacts[id]
-	if !exists {
-		fmt.Printf("Erreur : aucun contact trouvé avec l'ID %d.\n", id)
+		fmt.Println("Erreur", err)
 		return
 	}
 
 	contact.remove()
-	fmt.Printf("Le contact avec l'ID %d a été supprimé avec succès.\n", id)
+	fmt.Printf("Le contact avec l'ID %d a été supprimé avec succès.\n", contact.ID)
 }
 
 func (c *Contact) update(newName, newEmail string) {
@@ -149,16 +142,9 @@ func UpdateContact() {
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 
-	id64, err := strconv.ParseUint(input, 10, 64)
+	contact, err := searchUser(input)
 	if err != nil {
-		fmt.Println("Erreur : ID invalide.")
-		return
-	}
-	id := uint(id64)
-
-	contact, exists := contacts[id]
-	if !exists {
-		fmt.Printf("Erreur : aucun contact trouvé avec l'ID %d.\n", id)
+		fmt.Println("Erreur :", err)
 		return
 	}
 
@@ -195,4 +181,18 @@ func AddContactCLI(name, email string) {
 	c.displayContact()
 
 	fmt.Println(" Contact ajouté via CLI!")
+}
+
+func searchUser(input string) (*Contact, error) {
+	id64, err := strconv.ParseUint(input, 10, 64)
+	if err != nil {
+		return nil, errors.New("ID invalide.")
+	}
+	id := uint(id64)
+
+	contact, exists := contacts[id]
+	if !exists {
+		return nil, fmt.Errorf("Aucun contact trouvé avec l'ID %d.", id)
+	}
+	return contact, nil
 }
