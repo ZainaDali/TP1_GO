@@ -109,11 +109,10 @@ func RemoveContact() {
 	fmt.Print("ID du contact à supprimer : ")
 
 	input, _ := reader.ReadString('\n')
-	input = strings.TrimSpace(input)
 
 	contact, err := searchUser(input)
 	if err != nil {
-		fmt.Println("Erreur", err)
+		fmt.Println("Erreur :", err)
 		return
 	}
 
@@ -140,7 +139,6 @@ func UpdateContact() {
 
 	fmt.Print("\nID du contact à modifier : ")
 	input, _ := reader.ReadString('\n')
-	input = strings.TrimSpace(input)
 
 	contact, err := searchUser(input)
 	if err != nil {
@@ -184,6 +182,7 @@ func AddContactCLI(name, email string) {
 }
 
 func searchUser(input string) (*Contact, error) {
+	input = strings.TrimSpace(input)
 	id64, err := strconv.ParseUint(input, 10, 64)
 	if err != nil {
 		return nil, errors.New("ID invalide.")
