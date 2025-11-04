@@ -43,7 +43,19 @@ func (m *MemoryStore) Add(contact *Contact) error {
 	return nil
 }
 
-func (m *MemoryStore) Update(id, newName, newMail string) error {
+func (m *MemoryStore) Update(id uint, newName, newMail string) error {
+	contact, exists := m.contacts[id]
+	if !exists {
+		return fmt.Errorf("contact not found")
+	}
+
+	if newName != "" {
+		contact.Name = newName
+	}
+	if newMail != "" {
+		contact.Email = newMail
+	}
+
 	return nil
 }
 
