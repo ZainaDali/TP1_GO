@@ -44,10 +44,12 @@ func newContact(name, email string) (*Contact, error) {
 	}
 	return c, nil
 }
+
 func (c *Contact) add() {
 	contacts[c.ID] = c
 	nextID++
 }
+
 func AddContact() {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -68,31 +70,40 @@ func AddContact() {
 	}
 
 	c.add()
-	c.DisplayContact()
+	c.displayContact()
 
 	fmt.Println("Contact ajouté avec succès!")
 }
-func (c Contact) DisplayContact() {
+
+func (c Contact) displayContact() {
 	fmt.Println("\n┌────────────────────────────────────────┐")
 	fmt.Printf("│   ID    : %-28d │\n", c.ID)
 	fmt.Printf("│   Nom   : %-28s │\n", c.Name)
 	fmt.Printf("│   Email : %-28s │\n", c.Email)
 	fmt.Println("└────────────────────────────────────────┘")
 }
+
 func ListContacts() {
 	fmt.Println("\nListe des contacts :")
 	fmt.Println("========================")
 
+	if len(contacts) == 0 {
+		fmt.Printf("Aucun contact de disponible.\n")
+		return
+	}
+
 	for _, contact := range contacts {
-		contact.DisplayContact()
+		contact.displayContact()
 	}
 
 	fmt.Printf("\n Total : %d contact(s)\n", len(contacts))
 }
+
 func (c *Contact) Remove() {
 	delete(contacts, c.ID)
 	c = nil
 }
+
 func RemoveContact() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("ID du contact à supprimer : ")
@@ -116,6 +127,7 @@ func RemoveContact() {
 	contact.Remove()
 	fmt.Printf("Le contact avec l'ID %d a été supprimé avec succès.\n", id)
 }
+
 func (c *Contact) Update(newName, newEmail string) {
 	if newName != "" {
 		c.Name = newName
@@ -124,6 +136,7 @@ func (c *Contact) Update(newName, newEmail string) {
 		c.Email = newEmail
 	}
 }
+
 func UpdateContact() {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -169,6 +182,7 @@ func UpdateContact() {
 	fmt.Printf("   Nom  : %s\n", contact.Name)
 	fmt.Printf("   Email: %s\n", contact.Email)
 }
+
 func AddContactCLI(name, email string) {
 	c, err := newContact(name, email)
 
@@ -178,7 +192,7 @@ func AddContactCLI(name, email string) {
 	}
 
 	c.add()
-	c.DisplayContact()
+	c.displayContact()
 
 	fmt.Println(" Contact ajouté via CLI!")
 }
