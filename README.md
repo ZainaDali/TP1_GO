@@ -24,11 +24,14 @@ Fonctionnalités :
 
 ```
 TP1_GO/
-├── main.go # Point d’entrée du programme
-├── contact/
-│ └── contact.go # Gestion des contacts (ajout, suppression, affichage)
-└── menu/
-└── menu.go # Affichage du menu principal
+├── cmd/
+│   └── main.go               # Point d’entrée du programme
+├── internal/
+│   └── app/
+│       └── app.go            # Logique principale de l’application
+│   └── storage/
+│       └── memory.go         # Implémentation en mémoire du stockage des contacts
+│       └── storage.go        # Interface définissant les opérations de stockage
 ```
 
 ## Installation
@@ -45,7 +48,7 @@ cd TP1_GO
 1. Lancer le programme
 
 ```bash
-go run .
+go run cmd/main.go
 ```
 
 2. Ajouter un utilisateur (avec flag)
