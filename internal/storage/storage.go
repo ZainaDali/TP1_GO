@@ -1,7 +1,7 @@
 package storage
 
 type Storer interface {
-	GetAll(c []*Contact) error
+	GetAll() ([]*Contact, error)
 	Add(c *Contact) error
 	Update(id, newName, newMail string) error
 	Delete(c *Contact) error
