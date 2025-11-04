@@ -44,12 +44,10 @@ func newContact(name, email string) (*Contact, error) {
 	}
 	return c, nil
 }
-
 func (c *Contact) add() {
 	contacts[c.ID] = c
 	nextID++
 }
-
 func AddContact() {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -74,7 +72,6 @@ func AddContact() {
 
 	fmt.Println("Contact ajouté avec succès!")
 }
-
 func (c Contact) DisplayContact() {
 	fmt.Println("\n┌────────────────────────────────────────┐")
 	fmt.Printf("│   ID    : %-28d │\n", c.ID)
@@ -82,7 +79,6 @@ func (c Contact) DisplayContact() {
 	fmt.Printf("│   Email : %-28s │\n", c.Email)
 	fmt.Println("└────────────────────────────────────────┘")
 }
-
 func ListContacts() {
 	fmt.Println("\nListe des contacts :")
 	fmt.Println("========================")
@@ -93,7 +89,10 @@ func ListContacts() {
 
 	fmt.Printf("\n Total : %d contact(s)\n", len(contacts))
 }
-
+func (c *Contact) Remove() {
+	delete(contacts, c.ID)
+	c = nil
+}
 func RemoveContact() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("ID du contact à supprimer : ")
@@ -108,15 +107,23 @@ func RemoveContact() {
 	}
 	id := uint(id64)
 
-	if _, exists := contacts[id]; !exists {
+	contact, exists := contacts[id]
+	if !exists {
 		fmt.Printf("Erreur : aucun contact trouvé avec l'ID %d.\n", id)
 		return
 	}
 
-	delete(contacts, id)
+	contact.Remove()
 	fmt.Printf("Le contact avec l'ID %d a été supprimé avec succès.\n", id)
 }
-
+func (c *Contact) Update(newName, newEmail string) {
+	if newName != "" {
+		c.Name = newName
+	}
+	if newEmail != "" {
+		c.Email = newEmail
+	}
+}
 func UpdateContact() {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -154,14 +161,7 @@ func UpdateContact() {
 	newEmail, _ := reader.ReadString('\n')
 	newEmail = strings.TrimSpace(newEmail)
 
-	if newName != "" {
-		contact.Name = newName
-	}
-	if newEmail != "" {
-		contact.Email = newEmail
-	}
-
-	contacts[id] = contact
+	contact.Update(newName, newEmail)
 
 	fmt.Println("\n Contact mis à jour avec succès!")
 	fmt.Println("\n Nouvelles informations :")
@@ -169,7 +169,6 @@ func UpdateContact() {
 	fmt.Printf("   Nom  : %s\n", contact.Name)
 	fmt.Printf("   Email: %s\n", contact.Email)
 }
-
 func AddContactCLI(name, email string) {
 	c, err := newContact(name, email)
 
