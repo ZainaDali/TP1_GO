@@ -3,7 +3,7 @@ package storage
 type Storer interface {
 	GetAll() ([]*Contact, error)
 	Add(c *Contact) error
-	Update(id, newName, newMail string) error
+	Update(id uint, newName, newMail string) error
 	Delete(id uint) error
 	GetUserById(id uint) (*Contact, error)
 }
