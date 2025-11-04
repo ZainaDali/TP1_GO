@@ -54,7 +54,7 @@ go run cmd/main.go
 2. Ajouter un utilisateur (avec flag)
 
 ```bash
-go run . name=toto email=toto@mail.com
+go run cmd/main.go -name=toto -email=toto@mail.com
 ```
 
 3. Voir les flags disponibles
