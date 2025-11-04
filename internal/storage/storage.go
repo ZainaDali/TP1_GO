@@ -4,8 +4,8 @@ type Storer interface {
 	GetAll() ([]*Contact, error)
 	Add(c *Contact) error
 	Update(id, newName, newMail string) error
-	Delete(c *Contact) error
-	GetUserById(id string) error
+	Delete(id uint) error
+	GetUserById(id uint) (*Contact, error)
 }
 
 type Contact struct {
