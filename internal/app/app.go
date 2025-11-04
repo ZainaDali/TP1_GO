@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/ZainaDali/TP1_GO.git/internal/storage"
-	"github.com/ZainaDali/TP1_GO.git/menu"
 )
 
 func Run(store storage.Storer) {
@@ -26,7 +25,7 @@ func Run(store storage.Storer) {
 	var choice string
 
 	for {
-		menu.DisplayMenu()
+		DisplayMenu()
 		choice, _ = reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
 
@@ -48,19 +47,37 @@ func Run(store storage.Storer) {
 	}
 }
 
+func DisplayMenu() {
+	fmt.Println("\n=== Menu ===")
+	fmt.Println("1. Ajouter un contact")
+	fmt.Println("2. Voir les contacts")
+	fmt.Println("3. Supprimer un contact")
+	fmt.Println("4. Mettre à jour un contact")
+	fmt.Println("5. Quitter")
+	fmt.Print("Choisissez une option (1-5): ")
+}
+
+func readInput(reader *bufio.Reader, prompt string) string {
+	fmt.Print(prompt)
+	input, _ := reader.ReadString('\n')
+	return strings.TrimSpace(input)
+}
+
+func readID(reader *bufio.Reader, prompt string) (uint, error) {
+	input := readInput(reader, prompt)
+	id64, err := strconv.ParseUint(input, 10, 64)
+	if err != nil {
+		return 0, fmt.Errorf("ID invalide")
+	}
+	return uint(id64), nil
+}
 func handleAddContact(reader *bufio.Reader, store storage.Storer) {
 
 	fmt.Println("\n Ajouter un contact")
 	fmt.Println("====================")
 
-	fmt.Print("Nom : ")
-	name, _ := reader.ReadString('\n')
-
-	fmt.Print("Email : ")
-	email, _ := reader.ReadString('\n')
-
-	name = strings.TrimSpace(name)
-	email = strings.TrimSpace(email)
+	name := readInput(reader, "Nom : ")
+	email := readInput(reader, "Email : ")
 
 	if name == "" || email == "" {
 		fmt.Println("Erreur: nom et email requis")
@@ -106,16 +123,11 @@ func handleListContacts(store storage.Storer) {
 }
 
 func handleRemoveContact(reader *bufio.Reader, store storage.Storer) {
-	fmt.Print("ID du contact à supprimer : ")
-	input, _ := reader.ReadString('\n')
-
-	input = strings.TrimSpace(input)
-	id64, err := strconv.ParseUint(input, 10, 64)
+	id, err := readID(reader, "ID du contact à supprimer : ")
 	if err != nil {
-		fmt.Println("Erreur : ID invalide.")
+		fmt.Println("Erreur :", err)
 		return
 	}
-	id := uint(id64)
 
 	err = store.Delete(id)
 	if err != nil {
@@ -133,14 +145,12 @@ func handleUpdateContact(reader *bufio.Reader, store storage.Storer) {
 	// Affiche liste
 	handleListContacts(store)
 
-	fmt.Print("\nID du contact à modifier : ")
-	input, _ := reader.ReadString('\n')
+	id, err := readID(reader, "\nID du contact à modifier : ")
+	if err != nil {
+		fmt.Println("Erreur :", err)
+		return
+	}
 
-	input = strings.TrimSpace(input)
-	id64, _ := strconv.ParseUint(input, 10, 64)
-	id := uint(id64)
-
-	// Récupère du store
 	contact, err := store.GetUserById(id)
 	if err != nil {
 		fmt.Println("Erreur :", err)
@@ -151,13 +161,8 @@ func handleUpdateContact(reader *bufio.Reader, store storage.Storer) {
 	fmt.Printf("   Nom  : %s\n", contact.Name)
 	fmt.Printf("   Email: %s\n", contact.Email)
 
-	fmt.Print("\nNouveau nom (laisser vide pour ne pas changer) : ")
-	newName, _ := reader.ReadString('\n')
-	newName = strings.TrimSpace(newName)
-
-	fmt.Print("Nouveau email (laisser vide pour ne pas changer) : ")
-	newEmail, _ := reader.ReadString('\n')
-	newEmail = strings.TrimSpace(newEmail)
+	newName := readInput(reader, "\nNouveau nom (laisser vide pour ne pas changer) : ")
+	newEmail := readInput(reader, "Nouveau email (laisser vide pour ne pas changer) : ")
 
 	// Appel au store (au lieu de contact.update())
 	err = store.Update(id, newName, newEmail)
