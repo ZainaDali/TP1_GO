@@ -19,7 +19,7 @@ func NewMemoryStore() *MemoryStore {
 }
 
 func (m *MemoryStore) GetAll() ([]*Contact, error) {
-	contacts := make([]*Contact, 0, len(m.contacts))
+	var contacts []*Contact
 	for _, contact := range m.contacts {
 		contacts = append(contacts, contact)
 	}
