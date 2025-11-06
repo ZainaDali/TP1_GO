@@ -1,7 +1,10 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/ZainaDali/TP1_GO.git/internal/storage"
 	"github.com/spf13/cobra"
@@ -14,22 +17,28 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Ajoute un contact",
 	Run: func(cmd *cobra.Command, args []string) {
-		if name == "" || email == "" {
-			fmt.Println("Erreur: nom et email requis")
+		// si l'user utilise les flags
+		if name != "" && email != "" {
+			addContact(name, email)
 			return
 		}
 
-		contact := &storage.Contact{
-			Name:  name,
-			Email: email,
-		}
+		reader := bufio.NewReader(os.Stdin)
 
-		err := store.Add(contact)
-		if err != nil {
-			fmt.Println("Erreur lors de l'ajout :", err)
+		fmt.Print("Nom: ")
+		n, _ := reader.ReadString('\n')
+		n = strings.TrimSpace(n)
+
+		fmt.Print("Email: ")
+		m, _ := reader.ReadString('\n')
+		m = strings.TrimSpace(m)
+
+		if n == "" || m == "" {
+			fmt.Println("Erreur : nom et email requis")
 			return
 		}
-		fmt.Printf("Contact n°%d ajouté avec succès!", contact.ID)
+
+		addContact(n, m)
 	},
 }
 
@@ -37,4 +46,13 @@ func init() {
 	rootCmd.AddCommand(addCmd)
 	addCmd.Flags().StringVarP(&name, "name", "n", "", "Nom")
 	addCmd.Flags().StringVarP(&email, "email", "e", "", "Email")
+}
+
+func addContact(n, m string) {
+	c := &storage.Contact{Name: n, Email: m}
+	if err := store.Add(c); err != nil {
+		fmt.Println("Erreur lors de l'ajout :", err)
+		return
+	}
+	fmt.Printf("Contact n°%d ajouté avec succès !\n", c.ID)
 }
