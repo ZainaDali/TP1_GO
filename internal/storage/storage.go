@@ -9,7 +9,7 @@ type Storer interface {
 }
 
 type Contact struct {
-	ID    uint
-	Name  string
-	Email string
+	ID    uint   `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
