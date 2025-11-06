@@ -48,13 +48,19 @@ cd TP1_GO
 1. Lancer le programme
 
 ```bash
-go run cmd/main.go
+go build -o crm .
 ```
 
-2. Ajouter un utilisateur (avec flag)
+2. Voir les utilisateurs
 
 ```bash
-go run cmd/main.go -name=toto -email=toto@mail.com
+./crm list
+```
+
+3. Ajouter un utilisateur (avec flag)
+
+```bash
+./crm add -n=toto -e=toto@mail.com
 ```
 
 3. Voir les flags disponibles

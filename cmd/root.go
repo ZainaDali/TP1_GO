@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var store = storage.NewMemoryStore()
+var store storage.Storer
 
 var rootCmd = &cobra.Command{
 	Use: "crm",
@@ -22,4 +22,6 @@ func Execute() {
 	}
 }
 
-func init() {}
+func init() {
+	store = storage.NewMemoryStore()
+}
