@@ -63,8 +63,19 @@ go build -o crm .
 ./crm add -n=toto -e=toto@mail.com
 ```
 
-3. Voir les flags disponibles
+4. Ajouter un utilisateur (avec CLI)
+```bash
+go run . add -n "Alice" -e "alice@mail.com"
 
+go run . update -i 1 -n "Alice Dubois"
+
+go run . delete -i 2
+
+go run . list
 ```
+
+5. Voir les flags disponibles
+
+```bash
 go run . --help
 ```
