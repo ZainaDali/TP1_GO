@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/ZainaDali/TP1_GO.git/internal/storage"
 	"github.com/spf13/cobra"
 )
+
+var store = storage.NewMemoryStore()
 
 var rootCmd = &cobra.Command{
 	Use: "crm",
