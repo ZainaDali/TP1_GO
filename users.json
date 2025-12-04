@@ -1,17 +1,22 @@
 [
-    {
-        "id": 1,
-        "name": "Paul",
-        "email": "paul@mail.com"
-    },
-    {
-        "id": 2,
-        "name": "Alice",
-        "email": "alice@mail.com"
-    },
-    {
-        "id": 3,
-        "name": "John",
-        "email": "john@mail.com"
-    }
+  {
+    "id": 1,
+    "name": "Pol",
+    "email": "paul@mail.com"
+  },
+  {
+    "id": 2,
+    "name": "Polooo",
+    "email": "alice@mail.com"
+  },
+  {
+    "id": 3,
+    "name": "John",
+    "email": "john@mail.com"
+  },
+  {
+    "id": 4,
+    "name": "toto",
+    "email": "toto@mail.com"
+  }
 ]

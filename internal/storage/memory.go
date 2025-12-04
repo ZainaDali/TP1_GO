@@ -1,11 +1,5 @@
 package storage
 
-import (
-	"fmt"
-)
-
-var ErrContactNotFound = fmt.Errorf("L'utilisateur est introuvable.")
-
 type MemoryStore struct {
 	contacts map[uint]*Contact
 	nextID   uint

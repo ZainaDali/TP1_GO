@@ -18,27 +18,17 @@ var updateCmd = &cobra.Command{
 	Long:  "Modifie le nom et/ou l'email d'un contact existant",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		contact, err := store.GetUserById(updateID)
-		if err != nil {
-			fmt.Println("Erreur:", err)
-			return
-		}
-
-		fmt.Println("\nℹInformations actuelles :")
-		displayContact(contact)
-
 		if updateName == "" && updateEmail == "" {
 			fmt.Println("Aucune modification spécifiée. Utilisez --name ou --email")
 			return
 		}
 
-		err = store.Update(updateID, updateName, updateEmail)
-		if err != nil {
+		if err := store.Update(updateID, updateName, updateEmail); err != nil {
 			fmt.Println("Erreur lors de la mise à jour:", err)
 			return
 		}
 
-		fmt.Println("\nContact mis à jour avec succès!")
+		fmt.Printf("\nContact n°%d mis à jour avec succès!", updateID)
 		updatedContact, _ := store.GetUserById(updateID)
 		displayContact(updatedContact)
 	},

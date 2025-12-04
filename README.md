@@ -32,6 +32,7 @@ TP1_GO/
 │   └── storage/
 │       └── memory.go         # Implémentation en mémoire du stockage des contacts
 │       └── storage.go        # Interface définissant les opérations de stockage
+│       └── json.go           # Stockage dans un fichier json
 ```
 
 ## Installation
@@ -57,13 +58,26 @@ go build -o crm .
 ./crm list
 ```
 
-3. Ajouter un utilisateur (avec flag)
+3. Ajouter un utilisateur
+
+```bash
+./crm add
+```
+
+(avec flag)
 
 ```bash
 ./crm add -n=toto -e=toto@mail.com
 ```
 
+4. Modifier un utilisateur
+
+```bash
+./crm update -i 1
+```
+
 4. Ajouter un utilisateur (avec CLI)
+
 ```bash
 go run . add -n "Alice" -e "alice@mail.com"
 

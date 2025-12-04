@@ -1,5 +1,7 @@
 package storage
 
+import "fmt"
+
 type Storer interface {
 	GetAll() ([]*Contact, error)
 	Add(c *Contact) error
@@ -13,3 +15,5 @@ type Contact struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
+
+var ErrContactNotFound = fmt.Errorf("L'utilisateur est introuvable.")
