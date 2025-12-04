@@ -1,15 +1,11 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	"os"
+	"github.com/ZainaDali/TP1_GO.git/cmd"
 )
 
 func main() {
-	fmt.Println("Hello")
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Please enter your name:")
-	name, _ := reader.ReadString('\n')
-	fmt.Printf("Hello, %s!", name)
+	// store := storage.NewMemoryStore()
+	// app.Run(store)
+	cmd.Execute()
 }
