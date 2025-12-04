@@ -1,6 +1,6 @@
-# TP_GO — Mini CRM en ligne de commande
+## TP_GO — Mini CRM en ligne de commande
 
-## Prérequis
+### Prérequis
 
 - **Go ≥ 1.20** installé sur la machine
 
@@ -10,32 +10,42 @@ Vérification :
 go version
 ```
 
-## Description
+### Description
 
 Application CLI écrite en Go permettant de gérer un carnet de contacts.  
 Fonctionnalités :
 
-- Ajouter un contact
-- Lister les contacts
-- Supprimer un contact
-- Mettre à jour un contact
+- **Ajouter** un contact
+- **Lister** les contacts
+- **Supprimer** un contact
+- **Mettre à jour** un contact
 
-## Structure du projet
+Le stockage des contacts est **interchangeable** : fichier JSON ou base SQLite via GORM.
 
-```
+### Structure du projet
+
+```text
 TP1_GO/
 ├── cmd/
-│   └── main.go               # Point d’entrée du programme
+│   ├── root.go        # Commande racine, sélection du type de stockage
+│   ├── add.go         # Sous-commande: ajout de contact
+│   ├── list.go        # Sous-commande: liste des contacts
+│   ├── update.go      # Sous-commande: mise à jour
+│   └── delete.go      # Sous-commande: suppression
 ├── internal/
-│   └── app/
-│       └── app.go            # Logique principale de l’application
+│   ├── app/
+│   │   └── app.go     # Ancienne logique de menu interactif (non utilisée par Cobra)
+│   ├── config/
+│   │   └── config.go  # Configuration de l’application (BDD, etc.)
 │   └── storage/
-│       └── memory.go         # Implémentation en mémoire du stockage des contacts
-│       └── storage.go        # Interface définissant les opérations de stockage
-│       └── json.go           # Stockage dans un fichier json
+│       ├── storage.go # Interface Storer + modèle Contact
+│       ├── json.go    # Implémentation JSON (fichier users.json)
+│       └── gorm.go    # Implémentation GORM (SQLite)
+├── users.json         # Fichier de stockage JSON (si utilisé)
+└── main.go            # Point d’entrée qui appelle cmd.Execute()
 ```
 
-## Installation
+### Installation
 
 1. Cloner le dépôt :
 
@@ -44,52 +54,93 @@ git clone https://github.com/ZainaDali/TP1_GO.git
 cd TP1_GO
 ```
 
-## Utilisation
+2. (Optionnel) Récupérer les dépendances :
 
-1. Lancer le programme
+```bash
+go mod tidy
+```
+
+3. Construire le binaire :
 
 ```bash
 go build -o crm .
 ```
 
-2. Voir les utilisateurs
+### Utilisation de base (stockage par défaut : SQLite / GORM)
+
+Par défaut, le stockage est fait en **SQLite** (fichier `crm_users.db`) via GORM.
+
+- **Lister les contacts** :
 
 ```bash
 ./crm list
 ```
 
-3. Ajouter un utilisateur
+- **Ajouter un contact (mode interactif)** :
 
 ```bash
 ./crm add
 ```
 
-(avec flag)
+- **Ajouter un contact avec flags** :
 
 ```bash
-./crm add -n=toto -e=toto@mail.com
+./crm add -n "Toto" -e "toto@mail.com"
 ```
 
-4. Modifier un utilisateur
+- **Mettre à jour un contact** :
 
 ```bash
-./crm update -i 1
+./crm update -i 1 -n "Nouveau Nom" -e "nouvel@mail.com"
 ```
 
-4. Ajouter un utilisateur (avec CLI)
+- **Supprimer un contact** :
 
 ```bash
-go run . add -n "Alice" -e "alice@mail.com"
-
-go run . update -i 1 -n "Alice Dubois"
-
-go run . delete -i 2
-
-go run . list
+./crm delete -i 1
 ```
 
-5. Voir les flags disponibles
+### Choisir le type de stockage avec le flag `--storage` / `-s`
+
+Le type de stockage se choisit **à l’exécution**, grâce au flag global :
+
+- **SQLite / GORM (par défaut)** :
 
 ```bash
-go run . --help
+./crm list                    # équivalent à: ./crm list -s gorm
+./crm add -n "Toto" -e "toto@mail.com"
+./crm add -s gorm -n "Toto" -e "toto@mail.com"
+```
+
+- **JSON (fichier `users.json`)** :
+
+```bash
+./crm list -s json
+./crm add -s json -n "Toto" -e "toto@mail.com"
+./crm update -s json -i 1 -n "Tata"
+./crm delete -s json -i 1
+```
+
+Le flag `--storage` est **persistant** (global) : tu peux aussi écrire :
+
+```bash
+./crm -s json list
+./crm -s json add -n "Alice" -e "alice@mail.com"
+```
+
+### Aide et documentation des commandes
+
+Afficher l’aide générale :
+
+```bash
+./crm --help
+```
+
+Afficher l’aide d’une sous-commande :
+
+```bash
+./crm add --help
+./crm list --help
+./crm update --help
+./crm delete --help
 ```
