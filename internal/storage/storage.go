@@ -1,6 +1,10 @@
 package storage
 
-import "fmt"
+import (
+	"fmt"
+
+	"gorm.io/gorm"
+)
 
 type Storer interface {
 	GetAll() ([]*Contact, error)
@@ -11,9 +15,12 @@ type Storer interface {
 }
 
 type Contact struct {
-	ID    uint   `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	gorm.Model
+	// ID    uint   `json:"id"`
+	// Name  string `json:"name"`
+	// Email string `json:"email"`
+	Name  string `gorm:"type:varchar(100);not null"`
+	Email string `gorm:"type:varchar(100);unique;not null"`
 }
 
 var ErrContactNotFound = fmt.Errorf("L'utilisateur est introuvable.")

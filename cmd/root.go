@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/ZainaDali/TP1_GO.git/internal/config"
 	"github.com/ZainaDali/TP1_GO.git/internal/storage"
 	"github.com/spf13/cobra"
 )
@@ -23,7 +24,14 @@ func Execute() {
 }
 
 func init() {
-	store = storage.NewJSONStore("users.json")
+	// store = storage.NewJSONStore("users.json")
+	config.InitConfig()
+	db, err := storage.ConnectDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+	store = storage.NewGORMStore(db)
 }
 
 func displayContact(c *storage.Contact) {
